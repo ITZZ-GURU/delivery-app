@@ -1,5 +1,5 @@
--- Enable UUID extension
-create extension if not exists "uuid-ossp";
+-- Enable UUID extension (not needed, using gen_random_uuid())
+-- create extension if not exists "uuid-ossp";
 
 -- PROFILES
 create table public.profiles (
@@ -31,7 +31,7 @@ create trigger on_auth_user_created
 
 -- DISHES
 create table public.dishes (
-  id uuid default uuid_generate_v4() primary key,
+  id uuid default gen_random_uuid() primary key,
   name text not null,
   description text,
   price numeric not null,
@@ -58,7 +58,7 @@ create policy "Only admins can delete dishes" on dishes for delete using (
 
 -- DAILY MENUS
 create table public.daily_menus (
-  id uuid default uuid_generate_v4() primary key,
+  id uuid default gen_random_uuid() primary key,
   menu_date date not null,
   meal_type text not null,
   dish_id uuid references public.dishes on delete cascade not null,
@@ -77,7 +77,7 @@ create policy "Only admins can delete daily menus" on daily_menus for delete usi
 
 -- ADDRESSES
 create table public.addresses (
-  id uuid default uuid_generate_v4() primary key,
+  id uuid default gen_random_uuid() primary key,
   user_id uuid references auth.users on delete cascade not null,
   label text not null,
   hostel_name text not null,
@@ -97,7 +97,7 @@ create policy "Admins can view all addresses" on addresses for select using (
 
 -- ORDERS
 create table public.orders (
-  id uuid default uuid_generate_v4() primary key,
+  id uuid default gen_random_uuid() primary key,
   user_id uuid references auth.users on delete cascade not null,
   order_number text not null unique,
   fulfillment_type text not null check (fulfillment_type in ('delivery', 'pickup')),
@@ -123,7 +123,7 @@ create policy "Admins can update all orders" on orders for update using (
 
 -- ORDER ITEMS
 create table public.order_items (
-  id uuid default uuid_generate_v4() primary key,
+  id uuid default gen_random_uuid() primary key,
   order_id uuid references public.orders on delete cascade not null,
   dish_id uuid references public.dishes on delete set null,
   dish_name text not null,

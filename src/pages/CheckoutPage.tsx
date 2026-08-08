@@ -43,24 +43,33 @@ export function CheckoutPage() {
       ? { label: selectedAddress.label, hostel_name: selectedAddress.hostel_name, room_number: selectedAddress.room_number, phone: selectedAddress.phone }
       : null;
 
-    const { data: order, error: orderError } = await supabase.from('orders').insert({
-      order_number: orderNumber, fulfillment_type: fulfillmentType, delivery_address: addressSnapshot,
-      items_total: itemsTotal, delivery_fee: deliveryFee, grand_total: total, status: 'received', notes: notes || null,
-    }).select().single();
+    const payload = {
+      p_order_number: orderNumber,
+      p_fulfillment_type: fulfillmentType,
+      p_delivery_address: addressSnapshot,
+      p_items_total: itemsTotal,
+      p_delivery_fee: deliveryFee,
+      p_grand_total: total,
+      p_notes: notes || null,
+      p_items: items.map(item => ({
+        dish_id: item.dish.id,
+        dish_name: item.dish.name,
+        quantity: item.quantity,
+        customizations: item.selectedCustomizations
+      }))
+    };
 
-    if (orderError || !order) { setError('Failed to place order. Please try again.'); setPlacing(false); return; }
+    const { data: orderId, error: rpcError } = await supabase.rpc('create_order', payload);
 
-    const orderItems = items.map((item) => {
-      const addonTotal = item.selectedCustomizations.reduce((s, c) => s + c.price, 0);
-      const unitPrice = item.dish.price + addonTotal;
-      return { order_id: order.id, dish_id: item.dish.id, dish_name: item.dish.name, dish_price: unitPrice, quantity: item.quantity, customizations: item.selectedCustomizations, line_total: unitPrice * item.quantity };
-    });
-
-    const { error: itemsError } = await supabase.from('order_items').insert(orderItems);
-    if (itemsError) { setError('Order placed but items failed to save. Please contact support.'); setPlacing(false); return; }
+    if (rpcError || !orderId) { 
+      console.error('RPC Error:', rpcError);
+      setError('Failed to place order: ' + (rpcError?.message || 'Please try again.')); 
+      setPlacing(false); 
+      return; 
+    }
 
     clearCart();
-    navigate(`/order-confirmation/${order.id}`);
+    navigate(`/order-confirmation/${orderId}`);
   };
 
   if (!user || items.length === 0) return null;

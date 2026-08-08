@@ -151,7 +151,7 @@ export function HomePage() {
                 className="rounded-xl shadow-lg h-64 w-full object-cover"
               />
 
-              <div className="absolute -bottom-4 -left-4 flex items-center gap-2 rounded-xl bg-gold-400 px-5 py-3 shadow-xl z-10">
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 rounded-xl bg-gold-400 px-5 py-3 shadow-xl z-10">
                 <ChefHat className="h-6 w-6 text-charcoal-900" />
                 <span className="font-serif font-bold text-charcoal-900">
                   Home-style cooking

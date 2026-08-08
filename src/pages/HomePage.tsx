@@ -71,16 +71,17 @@ export function HomePage() {
               <p>And we're not just for Telugu students. Anyone on campus is welcome — if you love good, honest, home-style food, this is your adda.</p>
             </div>
           </div>
-          <div className="relative">
             <div className="grid grid-cols-2 gap-4">
               <img src="https://images.pexels.com/photos/32797056/pexels-photo-32797056.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Indian thali" className="rounded-xl shadow-lg h-64 w-full object-cover" />
               <img src="https://images.pexels.com/photos/23830980/pexels-photo-23830980.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Chicken biryani" className="rounded-xl shadow-lg h-64 w-full object-cover mt-8" />
-              <img src="https://images.pexels.com/photos/12392915/pexels-photo-12392915.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Masala dosa" className="rounded-xl shadow-lg h-64 w-full object-cover -mt-4" />
+              <div className="relative -mt-4">
+                <img src="https://images.pexels.com/photos/12392915/pexels-photo-12392915.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Masala dosa" className="rounded-xl shadow-lg h-64 w-full object-cover" />
+                <div className="absolute -bottom-4 -left-4 flex items-center gap-2 rounded-xl bg-gold-400 px-5 py-3 shadow-xl z-10">
+                  <ChefHat className="h-6 w-6 text-charcoal-900" />
+                  <span className="font-serif font-bold text-charcoal-900">Home-style cooking</span>
+                </div>
+              </div>
               <img src="https://images.pexels.com/photos/28674534/pexels-photo-28674534.jpeg?auto=compress&cs=tinysrgb&h=650&w=940" alt="Chilli chicken" className="rounded-xl shadow-lg h-64 w-full object-cover mt-4" />
-            </div>
-            <div className="absolute -bottom-4 -left-4 flex items-center gap-2 rounded-xl bg-gold-400 px-5 py-3 shadow-xl">
-              <ChefHat className="h-6 w-6 text-charcoal-900" />
-              <span className="font-serif font-bold text-charcoal-900">Home-style cooking</span>
             </div>
           </div>
         </div>

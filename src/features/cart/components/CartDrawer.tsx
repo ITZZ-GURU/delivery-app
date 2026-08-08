@@ -1,8 +1,8 @@
 import { X, Plus, Minus, Trash2, ShoppingBag } from 'lucide-react';
-import { useCart, customizationsKey } from '@/lib/cart';
+import { useCart, customizationsKey } from '@/features/cart/context/cart';
 import { formatPrice } from '@/lib/utils';
 import { navigate } from '@/lib/router';
-import { VegMark } from '@/components/VegMark';
+import { VegMark } from '@/features/menu/components/VegMark';
 
 export function CartDrawer() {
   const { items, isOpen, closeCart, updateQuantity, removeItem, totalItems, itemsTotal, deliveryFee, grandTotal } =

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { supabase, type Address as AddressType, DELIVERY_FEE } from '@/lib/supabase';
-import { useAuth } from '@/lib/auth';
-import { useCart } from '@/lib/cart';
+import { useAuth } from '@/features/auth/context/auth';
+import { useCart } from '@/features/cart/context/cart';
 import { formatPrice, generateOrderNumber } from '@/lib/utils';
 import { navigate } from '@/lib/router';
 import { Bike, Store, MapPin, Loader2, ShoppingBag, Check, AlertCircle, Plus } from 'lucide-react';

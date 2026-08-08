@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase, type Address as AddressType } from '@/lib/supabase';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/features/auth/context/auth';
 import { navigate } from '@/lib/router';
 import { Loader2, User, Mail, MapPin, Plus, Pencil, Trash2, Check, ArrowLeft, X } from 'lucide-react';
 

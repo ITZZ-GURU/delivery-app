@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Mail, Lock, UtensilsCrossed, AlertCircle } from 'lucide-react';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/features/auth/context/auth';
 import { navigate } from '@/lib/router';
 
 export function SignUpPage() {

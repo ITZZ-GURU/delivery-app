@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase, type Order, type OrderItem, ORDER_STATUS_LABELS } from '@/lib/supabase';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/features/auth/context/auth';
 import { formatPrice, formatDate } from '@/lib/utils';
 import { navigate } from '@/lib/router';
 import { Loader2, Receipt, Bike, Store, ChevronRight, ShoppingBag } from 'lucide-react';

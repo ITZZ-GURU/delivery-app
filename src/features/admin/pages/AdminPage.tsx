@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { supabase, type Order, type Dish, type OrderStatus, ORDER_STATUS_LABELS } from '@/lib/supabase';
-import { useAuth } from '@/lib/auth';
+import { useAuth } from '@/features/auth/context/auth';
 import { navigate } from '@/lib/router';
 import { Loader2, Plus } from 'lucide-react';
-import { VegMark } from '@/components/VegMark';
+import { VegMark } from '@/features/menu/components/VegMark';
 
 const formatPrice = (value: number | string) =>
   new Intl.NumberFormat('en-IN', {

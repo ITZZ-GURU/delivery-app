@@ -2,8 +2,8 @@ import { useEffect, useState, useMemo } from 'react';
 import { supabase, type Dish, type MealType, MEAL_TYPES } from '@/lib/supabase';
 import { getCurrentMealType, formatPrice } from '@/lib/utils';
 import { navigate } from '@/lib/router';
-import { VegMark } from '@/components/VegMark';
-import { useCart } from '@/lib/cart';
+import { VegMark } from '@/features/menu/components/VegMark';
+import { useCart } from '@/features/cart/context/cart';
 import { Plus, Loader2, Sunrise, Sun, Moon, UtensilsCrossed, Search } from 'lucide-react';
 
 const MEAL_ICONS: Record<MealType, typeof Sunrise> = {

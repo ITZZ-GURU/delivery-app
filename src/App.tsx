@@ -1,20 +1,20 @@
-import { AuthProvider } from '@/lib/auth';
-import { CartProvider } from '@/lib/cart';
+import { AuthProvider } from '@/features/auth/context/auth';
+import { CartProvider } from '@/features/cart/context/cart';
 import { useRouter } from '@/lib/router';
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
-import { CartDrawer } from '@/components/CartDrawer';
+import { Header } from '@/components/common/Header';
+import { Footer } from '@/components/common/Footer';
+import { CartDrawer } from '@/features/cart/components/CartDrawer';
 import { HomePage } from '@/pages/HomePage';
-import { MenuPage } from '@/pages/MenuPage';
-import { DishDetailPage } from '@/pages/DishDetailPage';
-import { SignInPage } from '@/pages/SignInPage';
-import { SignUpPage } from '@/pages/SignUpPage';
-import { ProfilePage } from '@/pages/ProfilePage';
-import { CheckoutPage } from '@/pages/CheckoutPage';
-import { OrderConfirmationPage } from '@/pages/OrderConfirmationPage';
-import { OrderTrackingPage } from '@/pages/OrderTrackingPage';
-import { OrdersPage } from '@/pages/OrdersPage';
-import { AdminPage } from '@/pages/AdminPage';
+import { MenuPage } from '@/features/menu/pages/MenuPage';
+import { DishDetailPage } from '@/features/menu/pages/DishDetailPage';
+import { SignInPage } from '@/features/auth/pages/SignInPage';
+import { SignUpPage } from '@/features/auth/pages/SignUpPage';
+import { ProfilePage } from '@/features/profile/pages/ProfilePage';
+import { CheckoutPage } from '@/features/checkout/pages/CheckoutPage';
+import { OrderConfirmationPage } from '@/features/orders/pages/OrderConfirmationPage';
+import { OrderTrackingPage } from '@/features/orders/pages/OrderTrackingPage';
+import { OrdersPage } from '@/features/orders/pages/OrdersPage';
+import { AdminPage } from '@/features/admin/pages/AdminPage';
 
 function RouteView() {
   const { route } = useRouter();

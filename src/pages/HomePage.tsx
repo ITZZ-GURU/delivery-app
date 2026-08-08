@@ -71,6 +71,7 @@ export function HomePage() {
             <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary-100 text-primary-700">
               <Clock className="h-6 w-6" />
             </div>
+
             <div>
               <p className="font-semibold text-charcoal-800">Open Now</p>
               <p className="text-sm text-charcoal-500">Serving {currentMeal}</p>
@@ -81,6 +82,7 @@ export function HomePage() {
             <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gold-100 text-gold-700">
               <Bike className="h-6 w-6" />
             </div>
+
             <div>
               <p className="font-semibold text-charcoal-800">Hostel Delivery</p>
               <p className="text-sm text-charcoal-500">Delivered to your room</p>
@@ -91,6 +93,7 @@ export function HomePage() {
             <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-green-100 text-green-700">
               <MapPin className="h-6 w-6" />
             </div>
+
             <div>
               <p className="font-semibold text-charcoal-800">Campus Pickup</p>
               <p className="text-sm text-charcoal-500">Pick up from our counter</p>
@@ -144,14 +147,14 @@ export function HomePage() {
               className="rounded-xl shadow-lg h-64 w-full object-cover mt-8"
             />
 
-            <div className="relative -mt-4">
+            <div className="relative -mt-4 pb-16">
               <img
                 src="https://images.pexels.com/photos/12392915/pexels-photo-12392915.jpeg?auto=compress&cs=tinysrgb&h=650&w=940"
                 alt="Masala dosa"
                 className="rounded-xl shadow-lg h-64 w-full object-cover"
               />
 
-              <div className="absolute bottom-4 left-4 flex items-center gap-2 rounded-xl bg-gold-400 px-5 py-3 shadow-xl z-10">
+              <div className="absolute top-full mt-3 left-1/2 -translate-x-1/2 flex items-center gap-2 rounded-xl bg-gold-400 px-5 py-3 shadow-xl z-10 whitespace-nowrap">
                 <ChefHat className="h-6 w-6 text-charcoal-900" />
                 <span className="font-serif font-bold text-charcoal-900">
                   Home-style cooking

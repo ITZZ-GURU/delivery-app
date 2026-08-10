@@ -5,7 +5,7 @@ import { supabase } from '@/lib/supabase';
 type AuthContextValue = {
   session: Session | null;
   user: User | null;
-  role: 'admin' | 'customer' | null;
+  role: 'vendor' | 'customer' | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<{ error: string | null }>;
   signUp: (email: string, password: string) => Promise<{ error: string | null }>;
@@ -16,7 +16,7 @@ const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
-  const [role, setRole] = useState<'admin' | 'customer' | null>(null);
+  const [role, setRole] = useState<'vendor' | 'customer' | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -25,12 +25,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setSession(session);
       
       if (session?.user) {
-        const { data: profile } = await supabase
-          .from('profiles')
+        const { data: userRole } = await supabase
+          .from('user_roles')
           .select('role')
-          .eq('id', session.user.id)
+          .eq('user_id', session.user.id)
           .single();
-        setRole(profile?.role || 'customer');
+        setRole(userRole?.role === 'vendor' ? 'vendor' : 'customer');
       }
       setLoading(false);
     }
@@ -40,12 +40,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { data: listener } = supabase.auth.onAuthStateChange(async (_event, newSession) => {
       setSession(newSession);
       if (newSession?.user) {
-        const { data: profile } = await supabase
-          .from('profiles')
+        const { data: userRole } = await supabase
+          .from('user_roles')
           .select('role')
-          .eq('id', newSession.user.id)
+          .eq('user_id', newSession.user.id)
           .single();
-        setRole(profile?.role || 'customer');
+        setRole(userRole?.role === 'vendor' ? 'vendor' : 'customer');
       } else {
         setRole(null);
       }

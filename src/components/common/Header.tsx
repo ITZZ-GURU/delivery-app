@@ -32,7 +32,7 @@ export function Header() {
             <button onClick={() => go('/')} className="btn-ghost">Home</button>
             <button onClick={() => go('/menu')} className="btn-ghost">Today's Menu</button>
             {user && <button onClick={() => go('/orders')} className="btn-ghost">My Orders</button>}
-            {role === 'admin' && (
+            {role === 'vendor' && (
               <button onClick={() => go('/admin')} className="btn-ghost text-primary-700 font-semibold">Admin</button>
             )}
             {user ? (
@@ -78,7 +78,7 @@ export function Header() {
             <button onClick={() => go('/')} className="btn-ghost justify-start">Home</button>
             <button onClick={() => go('/menu')} className="btn-ghost justify-start">Today's Menu</button>
             {user && <button onClick={() => go('/orders')} className="btn-ghost justify-start">My Orders</button>}
-            {role === 'admin' && (
+            {role === 'vendor' && (
               <button onClick={() => go('/admin')} className="btn-ghost justify-start text-primary-700 font-semibold">Admin</button>
             )}
             {user ? (

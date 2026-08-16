@@ -26,13 +26,13 @@ export function AdminPage() {
   useEffect(() => {
     if (authLoading) return;
 
-    if (!user || role !== 'admin') {
+    if (!user || role !== 'vendor') {
       navigate('/');
     }
   }, [user, role, authLoading]);
 
   useEffect(() => {
-    if (role !== 'admin') return;
+    if (role !== 'vendor') return;
 
     if (activeTab === 'orders') {
       loadOrders();
@@ -68,6 +68,14 @@ export function AdminPage() {
     }
   };
 
+  const updatePaymentStatus = async (orderId: string, payment_collected: boolean) => {
+    const { error } = await supabase.from('orders').update({ payment_collected }).eq('id', orderId);
+
+    if (!error) {
+      setOrders(orders.map((o) => (o.id === orderId ? { ...o, payment_collected } : o)));
+    }
+  };
+
   const toggleDishAvailability = async (dishId: string, currentStatus: boolean) => {
     const { error } = await supabase
       .from('dishes')
@@ -91,7 +99,7 @@ export function AdminPage() {
     );
   }
 
-  if (!user || role !== 'admin') {
+  if (!user || role !== 'vendor') {
     return null;
   }
 
@@ -163,6 +171,15 @@ export function AdminPage() {
                       </div>
 
                       <div className="flex items-center gap-3">
+                        <label className="flex items-center gap-2 text-sm font-medium text-charcoal-700 bg-white px-3 py-1.5 rounded-md border border-cream-200">
+                          <input
+                            type="checkbox"
+                            checked={order.payment_collected}
+                            onChange={(e) => updatePaymentStatus(order.id, e.target.checked)}
+                            className="h-4 w-4 rounded border-cream-300 text-primary-600 focus:ring-primary-500"
+                          />
+                          Paid
+                        </label>
                         <select
                           value={order.status}
                           onChange={(e) =>

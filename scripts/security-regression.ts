@@ -23,15 +23,17 @@ const anon = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 let failedTests = 0;
 
-async function assertReject(name: string, promise: Promise<any>) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function assertReject(name: string, promise: PromiseLike<any>) {
   try {
-    const { data, error } = await promise;
+    const { error } = await promise;
     if (error) {
       console.log(`✅ [PASS] ${name} (Rejected as expected: ${error.message})`);
     } else {
       console.error(`❌ [FAIL] ${name} (Expected rejection but succeeded!)`);
       failedTests++;
     }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (e: any) {
     console.log(`✅ [PASS] ${name} (Rejected as expected: ${e.message})`);
   }

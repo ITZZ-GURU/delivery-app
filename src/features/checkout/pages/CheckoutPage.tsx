@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { supabase, type Address as AddressType, DELIVERY_FEE } from '@/lib/supabase';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { useCart } from '@/features/cart/hooks/useCart';
-import { formatPrice, generateOrderNumber } from '@/lib/utils';
+import { formatPrice } from '@/lib/utils';
 import { navigate } from '@/lib/router';
 import { Bike, Store, MapPin, Loader2, ShoppingBag, Check, AlertCircle, Plus } from 'lucide-react';
 
@@ -37,7 +37,6 @@ export function CheckoutPage() {
     if (fulfillmentType === 'delivery' && !selectedAddress) { setError('Please select a delivery address or add a new one.'); return; }
     setPlacing(true);
 
-    const orderNumber = generateOrderNumber();
     const addressSnapshot = fulfillmentType === 'delivery' && selectedAddress
       ? { label: selectedAddress.label, hostel_name: selectedAddress.hostel_name, room_number: selectedAddress.room_number, phone: selectedAddress.phone }
       : null;

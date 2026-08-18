@@ -12,9 +12,9 @@ export function ProfilePage() {
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({ label: '', hostel_name: '', room_number: '', phone: '' });
   const [saving, setSaving] = useState(false);
-
   useEffect(() => {
     if (user) loadAddresses();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   async function loadAddresses() {

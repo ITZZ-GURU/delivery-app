@@ -1,33 +1,8 @@
-import { createContext, useContext, useState, type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import type { Customization, Dish } from '@/lib/supabase';
 import { DELIVERY_FEE } from '@/lib/supabase';
-
-export type CartItem = {
-  dish: Dish;
-  quantity: number;
-  selectedCustomizations: Customization[];
-};
-
-type CartContextValue = {
-  items: CartItem[];
-  isOpen: boolean;
-  openCart: () => void;
-  closeCart: () => void;
-  addItem: (dish: Dish, quantity: number, customizations: Customization[]) => void;
-  updateQuantity: (dishId: string, customizationsKey: string, quantity: number) => void;
-  removeItem: (dishId: string, customizationsKey: string) => void;
-  clearCart: () => void;
-  totalItems: number;
-  itemsTotal: number;
-  deliveryFee: number;
-  grandTotal: number;
-};
-
-const CartContext = createContext<CartContextValue | undefined>(undefined);
-
-function cKey(c: Customization[]) {
-  return c.map((x) => x.label).sort().join(',');
-}
+import { CartContext, type CartItem } from './CartContext';
+import { customizationsKey } from '../utils/cartUtils';
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
@@ -37,15 +12,22 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const closeCart = () => setIsOpen(false);
 
   const addItem = (dish: Dish, quantity: number, customizations: Customization[]) => {
-    const key = cKey(customizations);
+    // Add quantity bounds as part of Phase 3
+    if (quantity <= 0 || quantity > 50) return;
+    
+    const key = customizationsKey(customizations);
     setItems((prev) => {
       const existing = prev.find(
-        (item) => item.dish.id === dish.id && cKey(item.selectedCustomizations) === key,
+        (item) => item.dish.id === dish.id && customizationsKey(item.selectedCustomizations) === key,
       );
       if (existing) {
-        return prev.map((item) =>
-          item === existing ? { ...item, quantity: item.quantity + quantity } : item,
-        );
+        return prev.map((item) => {
+          if (item === existing) {
+            const newQuantity = Math.min(item.quantity + quantity, 50);
+            return { ...item, quantity: newQuantity };
+          }
+          return item;
+        });
       }
       return [...prev, { dish, quantity, selectedCustomizations: customizations }];
     });
@@ -57,10 +39,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
       removeItem(dishId, key);
       return;
     }
+    const safeQuantity = Math.min(quantity, 50);
     setItems((prev) =>
       prev.map((item) =>
-        item.dish.id === dishId && cKey(item.selectedCustomizations) === key
-          ? { ...item, quantity }
+        item.dish.id === dishId && customizationsKey(item.selectedCustomizations) === key
+          ? { ...item, quantity: safeQuantity }
           : item,
       ),
     );
@@ -69,7 +52,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const removeItem = (dishId: string, key: string) => {
     setItems((prev) =>
       prev.filter(
-        (item) => !(item.dish.id === dishId && cKey(item.selectedCustomizations) === key),
+        (item) => !(item.dish.id === dishId && customizationsKey(item.selectedCustomizations) === key),
       ),
     );
   };
@@ -105,11 +88,3 @@ export function CartProvider({ children }: { children: ReactNode }) {
     </CartContext.Provider>
   );
 }
-
-export function useCart() {
-  const ctx = useContext(CartContext);
-  if (!ctx) throw new Error('useCart must be used within CartProvider');
-  return ctx;
-}
-
-export { cKey as customizationsKey };

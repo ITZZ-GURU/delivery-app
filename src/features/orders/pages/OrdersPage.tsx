@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase, type Order, type OrderItem, ORDER_STATUS_LABELS } from '@/lib/supabase';
-import { useAuth } from '@/features/auth/context/auth';
+import { useAuth } from '@/features/auth/hooks/useAuth';
 import { formatPrice, formatDate } from '@/lib/utils';
 import { navigate } from '@/lib/router';
 import { Loader2, Receipt, Bike, Store, ChevronRight, ShoppingBag } from 'lucide-react';
@@ -13,13 +13,14 @@ export function OrdersPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) { navigate('/signin'); return; }
-    async function loadOrders() {
+    if (user) {
+      async function loadOrders() {
       const { data, error } = await supabase.from('orders').select('*, order_items(*)').eq('user_id', user!.id).order('created_at', { ascending: false });
       if (!error && data) setOrders(data as unknown as OrderWithItems[]);
       setLoading(false);
+      }
+      loadOrders();
     }
-    loadOrders();
   }, [user]);
 
   if (!user) return null;

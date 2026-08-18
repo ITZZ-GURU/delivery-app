@@ -24,8 +24,21 @@ export function OrderTrackingPage({ orderId }: { orderId: string }) {
       setLoading(false);
     }
     loadOrder();
-    const interval = setInterval(loadOrder, 5000);
-    return () => clearInterval(interval);
+    
+    const channel = supabase
+      .channel(`order_tracking_${orderId}`)
+      .on(
+        'postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'orders', filter: `id=eq.${orderId}` },
+        (payload) => {
+          setOrder(payload.new as Order);
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [orderId]);
 
   if (loading) return <div className="flex items-center justify-center py-20"><Loader2 className="h-8 w-8 animate-spin text-primary-600" /></div>;

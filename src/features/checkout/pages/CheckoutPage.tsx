@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { supabase, type Address as AddressType, DELIVERY_FEE } from '@/lib/supabase';
-import { useAuth } from '@/features/auth/context/auth';
-import { useCart } from '@/features/cart/context/cart';
+import { useAuth } from '@/features/auth/hooks/useAuth';
+import { useCart } from '@/features/cart/hooks/useCart';
 import { formatPrice, generateOrderNumber } from '@/lib/utils';
 import { navigate } from '@/lib/router';
 import { Bike, Store, MapPin, Loader2, ShoppingBag, Check, AlertCircle, Plus } from 'lucide-react';
@@ -18,7 +18,6 @@ export function CheckoutPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!user) { navigate('/signin'); return; }
     if (items.length === 0) { navigate('/menu'); return; }
     async function loadAddresses() {
       const { data, error } = await supabase.from('addresses').select('*').eq('user_id', user!.id).order('created_at', { ascending: false });
@@ -44,16 +43,11 @@ export function CheckoutPage() {
       : null;
 
     const payload = {
-      p_order_number: orderNumber,
       p_fulfillment_type: fulfillmentType,
       p_delivery_address: addressSnapshot,
-      p_items_total: itemsTotal,
-      p_delivery_fee: deliveryFee,
-      p_grand_total: total,
       p_notes: notes || null,
       p_items: items.map(item => ({
         dish_id: item.dish.id,
-        dish_name: item.dish.name,
         quantity: item.quantity,
         customizations: item.selectedCustomizations
       }))

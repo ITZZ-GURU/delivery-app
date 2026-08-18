@@ -1,5 +1,6 @@
 import { X, Plus, Minus, Trash2, ShoppingBag } from 'lucide-react';
-import { useCart, customizationsKey } from '@/features/cart/context/cart';
+import { useCart } from '@/features/cart/hooks/useCart';
+import { customizationsKey } from '@/features/cart/utils/cartUtils';
 import { formatPrice } from '@/lib/utils';
 import { navigate } from '@/lib/router';
 import { VegMark } from '@/features/menu/components/VegMark';

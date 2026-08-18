@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase, type Address as AddressType } from '@/lib/supabase';
-import { useAuth } from '@/features/auth/context/auth';
+import { useAuth } from '@/features/auth/hooks/useAuth';
 import { navigate } from '@/lib/router';
 import { Loader2, User, Mail, MapPin, Plus, Pencil, Trash2, Check, ArrowLeft, X } from 'lucide-react';
 
@@ -14,8 +14,7 @@ export function ProfilePage() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    if (!user) { navigate('/signin'); return; }
-    loadAddresses();
+    if (user) loadAddresses();
   }, [user]);
 
   async function loadAddresses() {
@@ -36,17 +35,30 @@ export function ProfilePage() {
     setShowForm(true);
   };
 
+  const [error, setError] = useState<string | null>(null);
+
   const handleSave = async () => {
     if (!user) return;
+    
+    // Basic validation
+    if (!/^\d{10}$/.test(formData.phone)) {
+      setError('Phone number must be 10 digits');
+      return;
+    }
+    setError(null);
     setSaving(true);
-    if (editingId) {
-      await supabase.from('addresses').update(formData).eq('id', editingId).eq('user_id', user.id);
+    
+    const { error: saveError } = editingId
+      ? await supabase.from('addresses').update(formData).eq('id', editingId).eq('user_id', user.id)
+      : await supabase.from('addresses').insert({ ...formData, user_id: user.id });
+      
+    if (saveError) {
+      setError('Failed to save address. Please try again.');
     } else {
-      await supabase.from('addresses').insert({ ...formData, user_id: user.id });
+      resetForm();
+      loadAddresses();
     }
     setSaving(false);
-    resetForm();
-    loadAddresses();
   };
 
   const handleDelete = async (id: string) => {
@@ -114,6 +126,7 @@ export function ProfilePage() {
                 <input value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} placeholder="9876543210" className="input" />
               </div>
             </div>
+            {error && <p className="text-sm text-red-600 mt-2">{error}</p>}
             <button onClick={handleSave} disabled={saving || !formData.label || !formData.hostel_name || !formData.room_number || !formData.phone} className="btn-primary mt-4">
               {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <><Check className="h-4 w-4" />{editingId ? 'Update' : 'Save'} Address</>}
             </button>

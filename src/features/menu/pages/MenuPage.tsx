@@ -3,7 +3,7 @@ import { supabase, type Dish, type MealType, MEAL_TYPES } from '@/lib/supabase';
 import { getCurrentMealType, formatPrice } from '@/lib/utils';
 import { navigate } from '@/lib/router';
 import { VegMark } from '@/features/menu/components/VegMark';
-import { useCart } from '@/features/cart/context/cart';
+import { useCart } from '@/features/cart/hooks/useCart';
 import { Plus, Loader2, Sunrise, Sun, Moon, UtensilsCrossed, Search } from 'lucide-react';
 
 const MEAL_ICONS: Record<MealType, typeof Sunrise> = {

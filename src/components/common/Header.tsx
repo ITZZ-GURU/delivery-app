@@ -1,7 +1,7 @@
 import { UtensilsCrossed, ShoppingCart, User, Menu as MenuIcon, X } from 'lucide-react';
 import { useState } from 'react';
-import { useAuth } from '@/features/auth/context/auth';
-import { useCart } from '@/features/cart/context/cart';
+import { useAuth } from '@/features/auth/hooks/useAuth';
+import { useCart } from '@/features/cart/hooks/useCart';
 import { navigate } from '@/lib/router';
 
 export function Header() {

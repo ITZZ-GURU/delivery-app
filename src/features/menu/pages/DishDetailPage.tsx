@@ -3,7 +3,7 @@ import { supabase, type Dish, type Customization } from '@/lib/supabase';
 import { formatPrice } from '@/lib/utils';
 import { navigate } from '@/lib/router';
 import { VegMark } from '@/features/menu/components/VegMark';
-import { useCart } from '@/features/cart/context/cart';
+import { useCart } from '@/features/cart/hooks/useCart';
 import { ArrowLeft, Plus, Minus, Loader2, UtensilsCrossed, Check } from 'lucide-react';
 
 export function DishDetailPage({ dishId }: { dishId: string }) {

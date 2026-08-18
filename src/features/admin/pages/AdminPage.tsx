@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase, type Order, type Dish, type OrderStatus, ORDER_STATUS_LABELS } from '@/lib/supabase';
-import { useAuth } from '@/features/auth/context/auth';
+import { useAuth } from '@/features/auth/hooks/useAuth';
 import { navigate } from '@/lib/router';
 import { Loader2, Plus } from 'lucide-react';
 import { VegMark } from '@/features/menu/components/VegMark';
@@ -23,13 +23,11 @@ export function AdminPage() {
   const [dishes, setDishes] = useState<Dish[]>([]);
   const [loadingMenu, setLoadingMenu] = useState(false);
 
-  useEffect(() => {
-    if (authLoading) return;
-
-    if (!user || role !== 'vendor') {
-      navigate('/');
-    }
-  }, [user, role, authLoading]);
+  // Auth is handled by ProtectedRoute
+  // useEffect(() => {
+  //   if (authLoading) return;
+  //   if (!user || role !== 'vendor') navigate('/');
+  // }, [user, role, authLoading]);
 
   useEffect(() => {
     if (role !== 'vendor') return;
@@ -205,9 +203,7 @@ export function AdminPage() {
         {activeTab === 'menu' && (
           <div>
             <div className="mb-4 flex justify-end">
-              <button className="btn-primary flex items-center gap-2 text-sm">
-                <Plus className="h-4 w-4" /> Add Dish (Coming Soon)
-              </button>
+              {/* Add Dish functionality removed to avoid confusing UX (Issue #68) */}
             </div>
 
             {loadingMenu ? (
